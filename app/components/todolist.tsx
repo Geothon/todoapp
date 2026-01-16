@@ -1,15 +1,21 @@
 import TodoComponent from "./todocomponent"
 
-type TodoBtnAddProps = {
-    onClick?: () => void;
-    todonum: string[];
-    handleDelete?: (index: number) => void;
+type Todo = {
+    id: number;
+    [key: string]: any;
 };
 
-export default function TodoList({ todonum, handleDelete }: { todonum: string[]; handleDelete?: (index: number) => void }) {
+type TodoListProps = {
+    onClick?: () => void;
+    todonum: Todo[];
+    handleDelete?: (id: number) => void;
+    handleUpdate?: (id: number, text: string) => void;
+};
+
+export default function TodoList({ todonum, handleDelete, handleUpdate }: TodoListProps) {
     return <div className="flex flex-col justify-center items-center gap-4 w-full">
-        {todonum.map((todo, index) => (
-                <TodoComponent todo={todo} key={index} handleDelete={() => {handleDelete?.(index)}} />
+        {todonum.map(todo => (
+                <TodoComponent todo={todo} key={todo.id} handleDelete={() => {handleDelete?.(todo.id)}} handleUpdate={(text) => {handleUpdate?.(todo.id, text)}} />
         ))}
     </div>
 };
